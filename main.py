@@ -1,20 +1,10 @@
 import requests
 from fastapi import Body, FastAPI, HTTPException, Request
-from fastapi.responses import RedirectResponse
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from fastapi.responses import RedirectResponse, JSONResponse
 from utils import generate_password, is_valid_lat_long
+from models import PasswordOptions
 
 app = FastAPI()
-
-
-# Class for validate password input
-class PasswordOptions(BaseModel):
-    length: int = Body(..., gt=0)
-    lowercase: bool = True
-    uppercase: bool = True
-    digits: bool = True
-    symbols: bool = True
 
 
 # Routers
@@ -29,7 +19,7 @@ def index():
     summary="Accept input payload then generate a new password as response with required length.",
     response_description="The new password as string in required length",
 )
-async def generate_password_endpoint(options: PasswordOptions = Body(...)):
+async def generate_password_endpoint(options: PasswordOptions = Body()):
     """
     API endpoint to generate a password.
     """
@@ -63,7 +53,6 @@ async def get_weather(lat: int = 0, lon: int = 0):
         )
     try:
         url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&hourly=temperature_2m"
-        print(url)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
