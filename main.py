@@ -39,7 +39,7 @@ async def generate_password_endpoint(options: PasswordOptions = Body()):
 
 
 @app.get(
-    "/weather/",
+    "/weather",
     summary="Get weather data from open-meteo Weather Forcast API",
     response_description="Response data from open-meteo Weather Forcast API with time and temperature",
 )
